@@ -602,13 +602,12 @@ public class frmProductos extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int respuesta = JOptionPane.showConfirmDialog(this,
-                "Estas seguro que deseas eliminar el registro " +
-                        updateProductos.getDescripcion() + "?",
-                "Eliminacion de articulos",
+                "Estas seguro que deseas eliminar el registro " + "?",
+                "Eliminacion de producto",
             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         //Si la respuesta es SI comienza a eliminar el registro 
         if(respuesta ==JOptionPane.YES_OPTION){
-            updateProductos.eliminar();
+            updateProductos.eleminar();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -637,12 +636,12 @@ public class frmProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCantidadActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        clsProductos clsProductos = new clsProductos (txtIDProducto.getText(), txtNombreProducto.getText(), txtTipoProducto.getText(), txtColor.getText(),  Double.parseDouble(txtPrecio.getText() txtCantidad.getText(), ));
-        cProductos.guardar();
+        clsProductos cProducto = new clsProductos (txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(),  Double.parseDouble(txtPrecio1.getText()), txtCantidad1.getText());
+        cProducto.guardar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-         updateProductos.actualizar(txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText() txtColor1.getText() txtPrecio2.getText() txtCantidad1.getText());
+         updateProductos.actualizar(txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(), txtPrecio2.getText(), txtCantidad1.getText());
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void txtIDProducto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDProducto1ActionPerformed
@@ -698,9 +697,9 @@ public class frmProductos extends javax.swing.JFrame {
             String idproducto = datos[0].replace("IDProducto: ", "");
             String nombreproducto = datos[1].replace(" NombreProducto: ", "");
             String tipoproducto = datos[2].replace(" TipoProducto: ", "");
-            String color = datos[0].replace("Color: ", "");
-            String precio = datos[1].replace(" Precio: ", "");
-            String cantidad = datos[2].replace(" Cantidad: ", "");
+            String color = datos[3].replace("Color: ", "");
+            String precio = datos[4].replace(" Precio: ", "");
+            String cantidad = datos[5].replace(" Cantidad: ", "");
             txtIDProducto1.setText(idproducto);
             txtNombreProducto1.setText(nombreproducto);
             txtTipoProducto1.setText(tipoproducto);
@@ -715,7 +714,7 @@ public class frmProductos extends javax.swing.JFrame {
         IblPrecio.setText(precio);
         IblCantidad.setText(cantidad);
         // llenamos el objeto con los valores originales
-        updateProducto = new clsProductos(idproducto, nombreproducto, tipoproducto, color, Double.parseDouble(precio) cantidad, );
+        updateProductos = new clsProductos(idproducto, nombreproducto, tipoproducto, color, Double.parseDouble(precio), cantidad);
         }
     }//GEN-LAST:event_lstProductosValueChanged
 
@@ -726,8 +725,7 @@ public class frmProductos extends javax.swing.JFrame {
                         "inventario.csv y se encuentre en la raiz del proyecto",
                 "Importacion de Datos desde archivo CSV",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-    } 
-    
+    }
     private void jmiImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiImportarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jmiImportarActionPerformed

@@ -19,7 +19,7 @@ public class frmMain extends javax.swing.JFrame {
         initComponents();
     }
     
-    frmProductos fProductos = new frmProductos();
+    frmProductos fProducto = new frmProductos();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,8 +65,8 @@ public class frmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnControlpapeleriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlpapeleriaActionPerformed
-        frmProductos fProductos = new frmProductos();
-        fProductos.setVisible(true);
+        frmProductos fProducto = new frmProductos();
+        fProducto.setVisible(true);
     }//GEN-LAST:event_btnControlpapeleriaActionPerformed
 
     /**
