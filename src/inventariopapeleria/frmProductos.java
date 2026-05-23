@@ -4,6 +4,28 @@
  */
 package inventariopapeleria;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -97,7 +119,7 @@ public class frmProductos extends javax.swing.JFrame {
         IblPrecio3 = new javax.swing.JLabel();
         IblCantidad4 = new javax.swing.JLabel();
         IblColor2 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jmArchivo = new javax.swing.JMenu();
@@ -231,18 +253,15 @@ public class frmProductos extends javax.swing.JFrame {
                         .addComponent(IblColor, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(101, 101, 101)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(IblCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(IblPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(IblCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(IblPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -454,7 +473,8 @@ public class frmProductos extends javax.swing.JFrame {
 
         IblColor2.setText("jLabel15");
 
-        jButton5.setText("Eliminar");
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -479,14 +499,14 @@ public class frmProductos extends javax.swing.JFrame {
                     .addComponent(IblPrecio3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(IblColor2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(btnEliminar)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5)
+                .addComponent(btnEliminar)
                 .addGap(17, 17, 17))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
@@ -607,7 +627,7 @@ public class frmProductos extends javax.swing.JFrame {
             JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         //Si la respuesta es SI comienza a eliminar el registro 
         if(respuesta ==JOptionPane.YES_OPTION){
-            updateProductos.eleminar();
+            updateProductos.eliminar();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -636,12 +656,12 @@ public class frmProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCantidadActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        clsProductos cProducto = new clsProductos (txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(),  Double.parseDouble(txtPrecio1.getText()), txtCantidad1.getText());
+        clsProductos cProducto = new clsProductos (txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(),  Double.parseDouble(IblPrecio1.getText()), txtCantidad1.getText());
         cProducto.guardar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-         updateProductos.actualizar(txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(), txtPrecio2.getText(), txtCantidad1.getText());
+         updateProductos.actualizar(txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(), IblPrecio1.getText(), txtCantidad1.getText());
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void txtIDProducto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDProducto1ActionPerformed
@@ -683,7 +703,8 @@ public class frmProductos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCantidad2ActionPerformed
 
     private void btnGuardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar2ActionPerformed
-        // TODO add your handling code here:
+        clsProductos cProducto = new clsProductos(txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(), Double.parseDouble(txtPrecio1.getText()), txtCantidad1.getText());
+        cProducto.guardar();
     }//GEN-LAST:event_btnGuardar2ActionPerformed
 
     private void lstProductosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstProductosValueChanged
@@ -717,7 +738,6 @@ public class frmProductos extends javax.swing.JFrame {
         updateProductos = new clsProductos(idproducto, nombreproducto, tipoproducto, color, Double.parseDouble(precio), cantidad);
         }
     }//GEN-LAST:event_lstProductosValueChanged
-
     private void jmArchivoActionPerformed(java.awt.event.ActionEvent evt) {                                          
         //Vamos a tener la logica de la importacion
         int respuesta = JOptionPane.showConfirmDialog(this,
@@ -727,20 +747,244 @@ public class frmProductos extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
     private void jmiImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiImportarActionPerformed
-        // TODO add your handling code here:
+        // Muestra un cuadro de dialogo preguntando si deseamos eliminar
+         int respuesta =  JOptionPane.showConfirmDialog(this,
+                "Es importante que el archivo a importar tenga el nombre "+
+                        "Inventario_Papeleria.csv y se encuentre en el raiz del proyecto", 
+                "Importacion de Datos desde archivo CSV",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        // Si la respuesta es Si comienza a eliminar el reegistro
+        if (respuesta == JOptionPane.YES_OPTION) {
+            clsCsv cCsv = new clsCsv();
+            cCsv.importarDatos();
+        }
     }//GEN-LAST:event_jmiImportarActionPerformed
 
     private void jmiExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExportarActionPerformed
-        // TODO add your handling code here:
+        try {
+        // 1. Preparamos una lista (La "caja") para guardar todos los artículos temporalmente en RAM
+        List<clsProductos> listaProductos = new ArrayList<>();
+       
+        // 2. Abrimos el archivo de texto plano para lectura
+        BufferedReader br = new BufferedReader(new FileReader("listado_producto.txt"));
+        String linea;
+       
+        // 3. Recorremos el archivo secuencial línea por línea
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split("\\|");
+           
+            // Verificamos que la línea tenga las 3 partes para evitar errores
+            if (datos.length >= 3) {
+                // Parseamos el precio a double
+                double precioParseado = Double.parseDouble(datos[2]);
+               
+                // Creamos el objeto y lo metemos a la lista
+                clsProductos nuevoProducto = new clsProductos(datos[0], datos[1], datos[2], datos[3], Double.parseDouble(datos[4]), datos[5]);
+                listaProductos.add(nuevoProducto);
+            }
+        }
+        br.close(); // Siempre cerrar el flujo de lectura
+       
+        // ==========================================
+        // 4. LA MAGIA DE GSON (Serialización Masiva)
+        // ==========================================
+       
+        // TIP DE INGENIERÍA: En lugar de usar 'new Gson()', usamos GsonBuilder
+        // con 'setPrettyPrinting' para que el archivo salga formateado con tabulaciones
+        // y saltos de línea (ideal para que los alumnos lo puedan leer fácil).
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+       
+        // Convertimos TODA la lista a un solo String con formato JSON
+        String jsonFinal = gson.toJson(listaProductos);
+       
+        // 5. Guardamos el String gigante en un archivo nuevo .json
+        BufferedWriter bw = new BufferedWriter(new FileWriter("respado_producto.json"));
+        bw.write(jsonFinal);
+        bw.close();
+       
+        JOptionPane.showMessageDialog(this, "¡Exportación masiva a JSON exitosa!");
+       
+    } catch (Exception e) {
+        System.out.println(" Error durante la exportación a JSON: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jmiExportarActionPerformed
 
     private void jmiGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiGenerarReporteActionPerformed
-        // TODO add your handling code here:
+        // 1. Instanciamos el documento (La "hoja" en blanco)
+        Document documento = new Document();
+
+        try {
+            // 2. Preparamos el escritor para guardar el archivo en el disco duro
+            PdfWriter.getInstance(documento, new FileOutputStream("Reporte_Inventario.pdf"));
+
+            // 3. Abrimos el documento para empezar a escribirle
+            documento.open();
+            
+            //Agregamos la imagen al reporte
+            try{
+                Image logo = Image.getInstance("Logo.jpg");
+                logo.scaleToFit(200, 200);
+                logo.setAlignment(Element.ALIGN_RIGHT);
+                documento.add(logo);
+            } catch (Exception e) {
+            System.out.println("Avisos: No se encontro la imagen del logo. " + e.getMessage());
+            }
+            // 4. Agregamos un Título
+            documento.add(new Paragraph("Reporte Gerencial de Inventario - Taller 360"));
+            documento.add(new Paragraph("Logo.jpg")); // Un salto de línea para dar espacio
+
+            // 5. Creamos la estructura tabular (3 columnas)
+            PdfPTable tabla = new PdfPTable(4);
+
+            // 6. Agregamos los encabezados de la tabla
+            tabla.addCell("CÓDIGO");
+            tabla.addCell("DESCRIPCIÓN");
+            tabla.addCell("PRECIO ($)");
+            tabla.addCell("ESTADO");
+
+            //7. Toma los daros desde el txt y los muestra en el PDF
+            BufferedReader br = new BufferedReader(new FileReader("listado_producto.txt"));
+            String linea;
+            double total = 0;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split("\\|");
+                if(datos.length >= 3){
+                    tabla.addCell(datos[0]);
+                    tabla.addCell(datos[1]);
+                    tabla.addCell(datos[2]);
+                    total = total + Double.parseDouble(datos[2]);
+                    if (Math.random() > 0.5){
+                        tabla.addCell("Agotado");
+                    }else {
+                        tabla.addCell("Disponible");
+                    }
+                }
+           }
+           br.close();
+
+            // 8. Inyectamos la tabla terminada dentro del documento PDF
+            documento.add(tabla);
+
+            // 9. Cerramos el documento (¡Importantísimo para que se guarde el archivo!)
+            documento.close();
+
+            // Mensaje de éxito para el usuario
+            javax.swing.JOptionPane.showMessageDialog(this, "¡PDF generado con éxito en la carpeta del proyecto!");
+
+        } catch (Exception e) {
+            System.out.println("Error al generar el PDF: " + e.getMessage());
+        }                                        
     }//GEN-LAST:event_jmiGenerarReporteActionPerformed
 
     private void jmiReporteBonitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiReporteBonitoActionPerformed
-        // TODO add your handling code here:
+        // 1. Configuramos fuentes profesionales (Tamaños y Colores)
+        Font fuenteTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK);
+        Font fuenteSubtitulo = FontFactory.getFont(FontFactory.HELVETICA, 12, BaseColor.DARK_GRAY);
+        Font fuenteCabeceraTabla = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
+
+        Document documento = new Document();
+
+        try {
+            // Preparamos el escritor
+            PdfWriter.getInstance(documento, new FileOutputStream("Reporte_Inventario.pdf"));
+            documento.open();
+
+            // 2. Agregamos el Logo (Alineado a la derecha)
+            try {
+                Image logo = Image.getInstance("Logo.jpg");
+                logo.scaleToFit(120, 80); 
+                logo.setAlignment(Element.ALIGN_RIGHT);
+                documento.add(logo);
+            } catch (Exception e) {
+                System.out.println("Aviso: No se encontró la imagen del logo.");
+            }
+            
+            // 3. Encabezado Corporativo de la Empresa
+            Paragraph nombreEmpresa = new Paragraph("TALLER 360 S.A. DE C.V.", fuenteTitulo);
+            nombreEmpresa.setAlignment(Element.ALIGN_LEFT);
+            documento.add(nombreEmpresa);
+
+            Paragraph tituloReporte = new Paragraph("Reporte Gerencial de Inventario", fuenteSubtitulo);
+            documento.add(tituloReporte);
+
+            // Agregamos la fecha y hora exacta del reporte
+            String fechaActual = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
+            Paragraph fecha = new Paragraph("Fecha de impresión: " + fechaActual, fuenteSubtitulo);
+            fecha.setSpacingAfter(20f); // Damos 20 puntos de espacio antes de que empiece la tabla
+            documento.add(fecha);
+
+            // 4. Mejoramos la estructura de la Tabla
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.setWidthPercentage(100); // El ancho de la hoja
+            tabla.setWidths(new float[]{2f, 5f, 2f, 2f}); // Tamaños relativos la descripción (5f)
+
+            // 5. Cabeceras con Estilo y Color de Fondo
+            String[] cabeceras = {"CÓDIGO", "DESCRIPCIÓN", "PRECIO ($)", "STATUS"};
+            for (String texto : cabeceras) {
+                PdfPCell celda = new PdfPCell(new Phrase(texto, fuenteCabeceraTabla));
+                celda.setBackgroundColor(new BaseColor(41, 128, 185)); // Un azul
+                celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celda.setPadding(8f); // Agregamos especiado a las cabeceras
+                tabla.addCell(celda);
+            }
+            
+            // 6. Lectura de datos desde el archivo .txt
+            BufferedReader br = new BufferedReader(new FileReader("listado_producto.txt"));
+            String linea;
+            double totalInversion = 0;
+
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split("\\|");
+                if (datos.length >= 3) {
+
+                    // Usamos PdfPCell para inyectar los datos, así podemos alinear los textos
+                    tabla.addCell(new PdfPCell(new Phrase(datos[0])));
+                    tabla.addCell(new PdfPCell(new Phrase(datos[1])));
+
+                    // El precio lo alineamos a la derecha (estándar contable)
+                    PdfPCell celdaPrecio = new PdfPCell(new Phrase("$" + datos[2]));
+                    celdaPrecio.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    tabla.addCell(celdaPrecio);
+
+                    try {
+                        totalInversion += Double.parseDouble(datos[2]);
+                    } catch (Exception e) {}
+
+                    String status = (Math.random() > 0.5) ? "Disponible" : "Agotado";
+                    PdfPCell celdaStatus = new PdfPCell(new Phrase(status));
+                    celdaStatus.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    tabla.addCell(celdaStatus);
+                }
+            }
+            br.close();
+
+            // Inyectamos la tabla al documento
+            documento.add(tabla);
+
+            // 7. Resaltamos el Total al final del reporte
+            Font fuenteTotal = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.RED);
+            Paragraph textoTotal = new Paragraph("\nInversión Total en Inventario: $" + String.format("%.2f", totalInversion), fuenteTotal);
+            textoTotal.setAlignment(Element.ALIGN_RIGHT); 
+            documento.add(textoTotal);
+
+            documento.close();
+            javax.swing.JOptionPane.showMessageDialog(this, "¡PDF generado con éxito en la carpeta del proyecto!");
+
+        } catch (Exception e) {
+            System.out.println("Error al generar el PDF: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al generar el PDF: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jmiReporteBonitoActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int repuesta = JOptionPane.showConfirmDialog(
+                this,"Deseas eliminar el registro?",
+                "Eliminar registro",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(repuesta == JOptionPane.YES_OPTION){
+            updateProductos.eliminar();
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -794,10 +1038,10 @@ public class frmProductos extends javax.swing.JFrame {
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscar1;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

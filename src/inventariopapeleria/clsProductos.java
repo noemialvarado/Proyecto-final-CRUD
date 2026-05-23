@@ -79,10 +79,10 @@ public class clsProductos {
         System.out.println("Valores Originales:" + lineaOriginal);
         // Solicita la actualilzacion del registro
         mProductos mProducto = new mProductos();
-        mProducto.update(lineaOriginal, nuevaLinea, "listado_articulo.txt");
+        mProducto.update(lineaOriginal, nuevaLinea, "listado_producto.txt");
     }
     
-    public void eleminar(){
+    public void eliminar(){
         // Registro a eleminar 
         String lineaOriginal = this.idproducto.trim() + "|" + this.nombreproducto.trim()  + "|" + this.tipoproducto.trim()  + "|" + this.color.trim()  + "|" + this.precio.doubleValue()+ "|" + this.cantidad.trim() ;
         System.out.println("Valores Originales:" + lineaOriginal);

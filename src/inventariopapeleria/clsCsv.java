@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class clsCsv {
      //Atributo del objeto CSV
-    String archivo = "Inventario.csv";
+    String archivo = "Inventario_Papeleria.csv";
     
     //Metodo del objeto CSV
     public void importarDatos(){
