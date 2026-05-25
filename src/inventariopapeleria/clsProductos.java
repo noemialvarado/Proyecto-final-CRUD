@@ -13,21 +13,21 @@ import javax.swing.DefaultListModel;
  */
 public class clsProductos {
   //Atributo que necesito que tenga el objeto atributo 
-    private String IDProducto;
-    private String NombreProducto;
-    private String TipoProducto;
-    private String Color;
-    private Double Precio;  
-    private String Cantidad;
+    private String idproducto;
+    private String nombreproducto;
+    private String tipoproducto;
+    private String color;
+    private Double precio;  
+    private String cantidad;
     
     //constructor 
-    public clsProductos(String IDProducto, String NombreProducto, String TipoProducto, String Color, Double Precio,  String Cantidad){
-        this.IDProducto = IDProducto; 
-        this.NombreProducto = NombreProducto;
-        this.TipoProducto = TipoProducto;
-        this.Color = Color;
-        this.Precio = Precio;
-        this.Cantidad = Cantidad;
+    public clsProductos(String idproducto, String nombreproducto, String tipoproducto, String color, Double precio,  String cantidad){
+        this.idproducto = idproducto; 
+        this.nombreproducto = nombreproducto;
+        this.tipoproducto = tipoproducto;
+        this.color = color;
+        this.precio = precio;
+        this.cantidad = cantidad;
         
 }
     
@@ -38,12 +38,12 @@ public class clsProductos {
     
     // Imprimir en consola los datos del articulo 
     public String aTexto(){
-        String productos = this.IDProducto + "|" + this.NombreProducto + "|" + this.TipoProducto + "|" + this.Color +"|" + this.Precio + "|" + this.Cantidad;
+        String productos = this.idproducto + "|" + this.nombreproducto + "|" + this.tipoproducto + "|" + this.color +"|" + this.precio + "|" + this.cantidad;
         return productos;
     }
     
     public String getNombreProducto(){
-        return this.NombreProducto;
+        return this.nombreproducto;
     }
     
 //Guardar informacion 
@@ -77,7 +77,7 @@ public class clsProductos {
         
         //Generamos la nueva linea del registro
         String nuevaLinea = newIDProducto + "|" + newNombreProducto + "|" + newTipoProducto  + "|" + newColor  + "|" + newPrecio  + "|" + newCantidad ;
-        String lineaOriginal = this.IDProducto.trim() + "|" + this.NombreProducto.trim() + "|" + this.TipoProducto + "|" + this.Color + "|" + this.Precio + "|" + this.Cantidad;
+        String lineaOriginal = this.idproducto.trim() + "|" + this.nombreproducto.trim() + "|" + this.tipoproducto + "|" + this.color + "|" + this.precio + "|" + this.cantidad;
         //Inprimir los nuevos valores
         System.out.println("Nuevo valores:" + nuevaLinea);
         System.out.println("Valores Originales:" + lineaOriginal);
@@ -91,7 +91,7 @@ public class clsProductos {
 
     public void eliminar(){
         //Registro a eliminar
-        String lineaOriginal = this.IDProducto + "|" + this.NombreProducto + "|" + this.TipoProducto + "|" + this.Color  + "|" +this.Precio + "|" + this.Cantidad;
+        String lineaOriginal = this.idproducto + "|" + this.nombreproducto + "|" + this.tipoproducto + "|" + this.color  + "|" +this.precio + "|" + this.cantidad;
         System.out.println("valores Originales:" + lineaOriginal);
         // solicita la actualizacion del registro 
         mProductos mProducto = new mProductos();
