@@ -1,4 +1,4 @@
-1|Cuaderno Profesional|Escolar|Azul|85.5|20
+1|Cuaderno Profesional|Dibujo|rosa|85.5|20
 2|Lapiz HB|Escritura|Amarillo|8.0|100
 3|Boligrafo Azul|Escritura|Azul|12.5|80
 4|Boligrafo Negro|Escritura|Negro|12.5|75

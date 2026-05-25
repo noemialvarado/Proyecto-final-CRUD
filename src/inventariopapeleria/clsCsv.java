@@ -24,7 +24,7 @@ public class clsCsv {
             while ((linea = br.readLine()) != null){
                 String[] datos = linea.split(",");
                 //Asignacion de valores para insertar datos.
-                clsProductos cProducto = new clsProductos(datos[0], datos[1], datos[2], datos[3], Double.parseDouble(datos[4]), datos[5]);
+                clsProductos cProducto = new clsProductos(datos[1], datos[2], datos[3], datos[4], Double.parseDouble(datos[5]), datos[6]);
                 //Alamacena en archivo txt
                 cProducto.guardar();
             }
