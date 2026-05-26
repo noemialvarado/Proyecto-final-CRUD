@@ -1,7 +1,7 @@
-Id Producto,Nombre Producto,Tipo Producto,Color,Precio,Cantidad
-1,Cuaderno Profesional,Escolar,Azul,85.5,20
-2,Lapiz HB,Escritura,Amarillo,8,100
-3,Boligrafo Azul,Escritura,Azul,12.5,80
-4,Boligrafo Negro,Escritura,Negro,12.5,75
-5,Marcador Permanente,Oficina,Negro,25,35
-6,Resaltador,Oficina,Verde,18.75,40
+Id Producto,Nombre Producto,Tipo Producto,Color,Precio,Cantidad,
+1,Cuaderno Profesional,Escolar,Azul,85.5,20,
+2,Lapiz HB,Escritura,Amarillo,8,100,
+3,Boligrafo Azul,Escritura,Azul,12.5,80,
+4,Boligrafo Negro,Escritura,Negro,12.5,75,
+5,Marcador Permanente,Oficina,Negro,25,35,
+6,Resaltador,Oficina,Verde,18.75,40,

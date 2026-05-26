@@ -52,7 +52,6 @@ public class clsProductos {
         mProductos producto = new mProductos ();
         // Enviamos la cadena de texto para guardar en el archivo
         producto.insertar(this.aTexto());
-        
         System.out.println(this.aTexto());
     }
     
@@ -73,30 +72,55 @@ public class clsProductos {
     return modelLista;  
 }
     
-    public void actualizar(String newIDProducto, String newNombreProducto, String newTipoProducto,String newColor, String newPrecio, String newCantidad){
-        
-        //Generamos la nueva linea del registro
-        String nuevaLinea = newIDProducto + "|" + newNombreProducto + "|" + newTipoProducto  + "|" + newColor  + "|" + newPrecio  + "|" + newCantidad ;
-        String lineaOriginal = this.idproducto.trim() + "|" + this.nombreproducto.trim() + "|" + this.tipoproducto + "|" + this.color + "|" + this.precio + "|" + this.cantidad;
-        //Inprimir los nuevos valores
-        System.out.println("Nuevo valores:" + nuevaLinea);
-        System.out.println("Valores Originales:" + lineaOriginal);
-        //solicita la actualizacion del registro
-        mProductos mProducto = new mProductos();
-        mProducto.update(lineaOriginal, nuevaLinea, "listado_producto.txt");
-        
-    }
-    
+        public void actualizar(String newIDProducto,
+            String newNombreProducto,
+            String newTipoProducto,
+            String newColor,
+            String newPrecio,
+            String newCantidad){
 
+    // Generamos la nueva línea
+    String nuevaLinea =
+            newIDProducto + "|" +
+            newNombreProducto + "|" +
+            newTipoProducto + "|" +
+            newColor + "|" +
+            newPrecio + "|" +
+            newCantidad;
+
+    // Línea original
+    String lineaOriginal =
+            this.idproducto.trim() + "|" +
+            this.nombreproducto.trim() + "|" +
+            this.tipoproducto.trim() + "|" +
+            this.color.trim() + "|" +
+            this.precio + "|" +
+            this.cantidad;
+
+    // Mostrar en consola
+    System.out.println("Nuevos valores: " + nuevaLinea);
+    System.out.println("Valores originales: " + lineaOriginal);
+
+    // Actualización
+    mProductos mProducto = new mProductos();
+
+    // IMPORTANTE: mismo nombre del archivo
+    mProducto.update(lineaOriginal, nuevaLinea, "Listado_producto.txt");
+}   
 
     public void eliminar(){
-        //Registro a eliminar
-        String lineaOriginal = this.idproducto + "|" + this.nombreproducto + "|" + this.tipoproducto + "|" + this.color  + "|" +this.precio + "|" + this.cantidad;
-        System.out.println("valores Originales:" + lineaOriginal);
-        // solicita la actualizacion del registro 
-        mProductos mProducto = new mProductos();
-        mProducto.delete(lineaOriginal, "listado_producto.txt");
-    }
+
+    String lineaOriginal =
+            this.idproducto.trim() + "|" +
+            this.nombreproducto.trim() + "|" +
+            this.tipoproducto.trim() + "|" +
+            this.color.trim() + "|" +
+            this.precio + "|" +
+            this.cantidad;
+
+    System.out.println("Valores originales: " + lineaOriginal);
+    mProductos mProducto = new mProductos();
+    mProducto.delete(lineaOriginal, "Listado_producto.txt");
 }
-    
+}
     

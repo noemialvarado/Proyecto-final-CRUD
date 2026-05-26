@@ -1,6 +1,7 @@
-1|Cuaderno Profesional|Dibujo|rosa|85.5|20
-2|Lapiz HB|Escritura|Amarillo|8.0|100
-3|Boligrafo Azul|Escritura|Azul|12.5|80
-4|Boligrafo Negro|Escritura|Negro|12.5|75
-5|Marcador Permanente|Oficina|Negro|25.0|35
-6|Resaltador|Oficina|Verde|18.75|40
+1|Lapicera|Escritura| Amarillo|8.0|100
+2|Boligrafo Azul|Escritura|Azul|12.5|80
+3|Boligrafo Negro|Escritura|Negro|12.5|75
+4|Marcador de Agua|Oficina| Negro|25.0|35
+5|Resaltador|Oficina|Verde|18.75|40
+11|charpie|marcadores|multicolor|150.0|10
+8|folder|escolar|azul|57.0|2

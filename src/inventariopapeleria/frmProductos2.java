@@ -87,7 +87,7 @@ public class frmProductos2 extends javax.swing.JFrame {
         txtNombreProducto = new javax.swing.JTextField();
         txtTipoProducto = new javax.swing.JTextField();
         txtColor = new javax.swing.JTextField();
-        txtPrecio1 = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
         txtCantidad = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -187,6 +187,7 @@ public class frmProductos2 extends javax.swing.JFrame {
         IblColor2.setText("jLabel15");
 
         jButton5.setText("Eliminar");
+        jButton5.addActionListener(this::jButton5ActionPerformed);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -268,7 +269,7 @@ public class frmProductos2 extends javax.swing.JFrame {
 
         txtColor.addActionListener(this::txtColorActionPerformed);
 
-        txtPrecio1.addActionListener(this::txtPrecio1ActionPerformed);
+        txtPrecio.addActionListener(this::txtPrecioActionPerformed);
 
         txtCantidad.addActionListener(this::txtCantidadActionPerformed);
 
@@ -309,7 +310,7 @@ public class frmProductos2 extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                     .addComponent(IblPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(txtPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(40, 40, 40))
         );
@@ -335,7 +336,7 @@ public class frmProductos2 extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IblPrecio1)
-                    .addComponent(txtPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -441,6 +442,7 @@ public class frmProductos2 extends javax.swing.JFrame {
         IblCantidad2.setText("Consultar producto");
 
         jmArchivo.setText("Archivo");
+        jmArchivo.addActionListener(this::jmArchivoActionPerformed);
 
         jmiImportar.setText("Importar CSV");
         jmiImportar.addActionListener(this::jmiImportarActionPerformed);
@@ -539,7 +541,7 @@ public class frmProductos2 extends javax.swing.JFrame {
             List<clsProductos> listaProductos = new ArrayList<>();
 
             // 2. Abrimos el archivo de texto plano para lectura
-            BufferedReader br = new BufferedReader(new FileReader("listado_producto.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("Listado_producto.txt"));
             String linea;
 
             // 3. Recorremos el archivo secuencial línea por línea
@@ -547,9 +549,9 @@ public class frmProductos2 extends javax.swing.JFrame {
                 String[] datos = linea.split("\\|");
 
                 // Verificamos que la línea tenga las 3 partes para evitar errores
-                if (datos.length >= 4) {
+                if (datos.length >= 6) {
                     // Parseamos el precio a double
-                    double precioParseado = Double.parseDouble(datos[3]);
+                    double precioParseado = Double.parseDouble(datos[2]);
 
                     // Creamos el objeto y lo metemos a la lista
                     clsProductos nuevoProducto = new clsProductos(datos[1], datos[2], datos[3], datos[4], precioParseado, datos[5]);
@@ -608,7 +610,7 @@ public class frmProductos2 extends javax.swing.JFrame {
             documento.add(new Paragraph(" ")); // Un salto de línea para dar espacio
 
             // 5. Creamos la estructura tabular (3 columnas)
-            PdfPTable tabla = new PdfPTable(4);
+            PdfPTable tabla = new PdfPTable(6);
 
             // 6. Agregamos los encabezados de la tabla
             tabla.addCell("IDPRODUCTO");
@@ -619,17 +621,18 @@ public class frmProductos2 extends javax.swing.JFrame {
             tabla.addCell("CANTIDAD");
 
             //7. Toma los daros desde el txt y los muestra en el PDF
-            BufferedReader br = new BufferedReader(new FileReader ("listado_producto.txt"));
+            BufferedReader br = new BufferedReader(new FileReader ("Listado_producto.txt"));
             String linea;
             double total = 0;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split("\\|");
-                if(datos.length >= 4){
+                if(datos.length >= 6){
                     tabla.addCell(datos[1]);
                     tabla.addCell(datos[2]);
                     tabla.addCell(datos[3]);
                     tabla.addCell(datos[4]);
                     tabla.addCell(datos[5]);
+                    tabla.addCell(datos[6]);
                     total = total + Double.parseDouble(datos[2]);
                     if (Math.random() > 0.5){
                         tabla.addCell("Agotado");
@@ -693,12 +696,12 @@ public class frmProductos2 extends javax.swing.JFrame {
             documento.add(fecha);
 
             // 4. Mejoramos la estructura de la Tabla
-            PdfPTable tabla = new PdfPTable(4);
+            PdfPTable tabla = new PdfPTable(6);
             tabla.setWidthPercentage(100); // El ancho de la hoja
-            tabla.setWidths(new float[]{2f, 5f, 3f, 3f,}); // Tamaños relativos la descripción (5f)
+            tabla.setWidths(new float[]{2f, 5f, 3f, 3f, 3f, 3f,}); // Tamaños relativos la descripción (5f)
 
             // 5. Cabeceras con Estilo y Color de Fondo
-            String[] cabeceras = {"IDPRODUCTO", "NOMBREPRODUCTO", "TIPOPRODUCTO", "COLOR", "PRECIO ($)", "CANTIDAD",};
+            String[] cabeceras = {"IDPRODUCTO", "NOMBREPRODUCTO", "TIPOPRODUCTO", "COLOR", "PRECIO ($)", "CANTIDAD"};
             for (String texto : cabeceras) {
                 PdfPCell celda = new PdfPCell(new Phrase(texto, fuenteCabeceraTabla));
                 celda.setBackgroundColor(new BaseColor(41, 128, 185)); // Un azul
@@ -714,13 +717,14 @@ public class frmProductos2 extends javax.swing.JFrame {
 
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split("\\|");
-                if (datos.length >= 4) {
+                if (datos.length >= 6) {
 
                     // Usamos PdfPCell para inyectar los datos, así podemos alinear los textos
                     tabla.addCell(new PdfPCell(new Phrase(datos[1])));
                     tabla.addCell(new PdfPCell(new Phrase(datos[2])));
                     tabla.addCell(new PdfPCell(new Phrase(datos[3])));
                     tabla.addCell(new PdfPCell(new Phrase(datos[4])));
+                    tabla.addCell(new PdfPCell(new Phrase(datos[5])));
                     
                    
 
@@ -768,12 +772,12 @@ public class frmProductos2 extends javax.swing.JFrame {
             // separar los datos por el caracter especial
             String[] datos = registroSeleccionado.split("\\|");
             // Preparamos los datos pora mostrar limpios
-            String idproducto = datos[1].replace("IDProducto: ", "");
-            String nombreproducto = datos[2].replace(" NombreProducto: ", "");
-            String tipoproducto = datos[3].replace(" TipoProducto: ", "");
-            String color = datos[4].replace("Color: ", "");
-            String precio = datos[5].replace(" Precio: ", "");
-            String cantidad = datos[6].replace(" Cantidad: ", "");
+            String idproducto = datos[0].replace("IDProducto: ", "");
+            String nombreproducto = datos[1].replace(" NombreProducto: ", "");
+            String tipoproducto = datos[2].replace(" TipoProducto: ", "");
+            String color = datos[3].replace("Color: ", "");
+            String precio = datos[4].replace(" Precio: ", "");
+            String cantidad = datos[5].replace(" Cantidad: ", "");
             txtIDProducto1.setText(idproducto);
             txtNombreProducto1.setText(nombreproducto);
             txtTipoProducto1.setText(tipoproducto);
@@ -788,7 +792,7 @@ public class frmProductos2 extends javax.swing.JFrame {
             IblPrecio2.setText(precio);
             IblCantidad1.setText(cantidad);
             // llenamos el objeto con los valores originales
-            updateProductos = new clsProductos(idproducto, nombreproducto, tipoproducto, color, precio, cantidad);
+            updateProductos = new clsProductos(idproducto, nombreproducto, tipoproducto, color, Double.parseDouble(precio), cantidad);
         }
     }//GEN-LAST:event_lstProductosValueChanged
 
@@ -797,7 +801,8 @@ public class frmProductos2 extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCantidad2ActionPerformed
 
     private void btnGuardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar2ActionPerformed
-        // TODO add your handling code here:
+        clsProductos cProducto = new clsProductos();
+        lstProductos.setModel(cProducto.llenarLista()); 
     }//GEN-LAST:event_btnGuardar2ActionPerformed
 
     private void txtIDProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDProductoActionPerformed
@@ -816,16 +821,16 @@ public class frmProductos2 extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtColorActionPerformed
 
-    private void txtPrecio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecio1ActionPerformed
+    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecio1ActionPerformed
+    }//GEN-LAST:event_txtPrecioActionPerformed
 
     private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        clsProductos cProducto = new clsProductos(txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(),  Double.parseDouble(txtPrecio2.getText()), txtCantidad1.getText());
+        clsProductos cProducto = new clsProductos(txtIDProducto.getText(), txtNombreProducto.getText(), txtTipoProducto.getText(), txtColor.getText(), Double.parseDouble(txtPrecio.getText()), txtCantidad.getText());
         cProducto.guardar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -854,8 +859,34 @@ public class frmProductos2 extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIDProducto1ActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        if(updateProductos == null){
+    JOptionPane.showMessageDialog(null, "Seleccione un producto");
+    return;
+}
         updateProductos.actualizar(txtIDProducto1.getText(), txtNombreProducto1.getText(), txtTipoProducto1.getText(), txtColor1.getText(),  txtPrecio2.getText(),  txtCantidad1.getText());
+        // RECARGAR LISTA
+        lstProductos.setModel(updateProductos.llenarLista());
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void jmArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmArchivoActionPerformed
+        //Vamos a tener la logica de la importacion
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "Es importante que el archivo a importar tenga el nombre "+
+                        "inventario.csv y se encuentre en la raiz del proyecto",
+                "Importacion de Datos desde archivo CSV",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    }//GEN-LAST:event_jmArchivoActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(updateProductos == null){
+    JOptionPane.showMessageDialog(null, "Seleccione un producto");
+    return;
+}
+        updateProductos.eliminar();
+
+        // RECARGAR LISTA
+        lstProductos.setModel(updateProductos.llenarLista());
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -879,7 +910,7 @@ public class frmProductos2 extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new frmProductos2().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new inventariopapeleria.frmProductos2().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -938,7 +969,7 @@ public class frmProductos2 extends javax.swing.JFrame {
     private javax.swing.JTextField txtIDProducto1;
     private javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txtNombreProducto1;
-    private javax.swing.JTextField txtPrecio1;
+    private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtPrecio2;
     private javax.swing.JTextField txtTipoProducto;
     private javax.swing.JTextField txtTipoProducto1;
